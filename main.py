@@ -10,14 +10,13 @@ from modelos import (
 import os
 
 def mostrar_menu():
-    print("\n----- Menú principal -----")
+    print("\n Menú principal ")
     print("1. Cargar archivo")
     print("2. Procesar archivo (agrupar estaciones)")
     print("3. Escribir archivo de salida (XML reducido)")
     print("4. Mostrar datos del estudiante (ejemplo)")
     print("5. Generar gráfica (DOT)")
     print("6. Salir")
-    print("--------------------------")
 
 def main():
     campos_cargados = None
