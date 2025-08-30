@@ -254,3 +254,32 @@ def generar_dot_matriz_frecuencias(campo, grupos, ruta_dot):
     for sensor in campo.sensoresCultivo:
         lab = sensor.id + "\\n" + sensor.nombre
         f.write('  "{}" [shape=ellipse];\n'.format(lab))
+
+    for grupo in grupos:
+        id_repre, nombres_concat, suma_suelo, _ = sumar_frecuencias_por_grupo(campo, grupo)
+        if id_repre is None:
+            continue
+        est_label = id_repre + "\\n" + nombres_concat
+        for f_freq in suma_suelo:
+            for sensor in campo.sensoresSuelo:
+                val = get_frecuencia_sensor(sensor, f_freq.idEstacion)
+                if val == f_freq.valor and val != 0:
+                    sensor_label = sensor.id + "\\n" + sensor.nombre
+                    f.write('  "{}" -> "{}" [label="{}"];\n'.format(est_label, sensor_label, val))
+                    break
+
+    for grupo in grupos:
+        id_repre, nombres_concat, _, suma_cult = sumar_frecuencias_por_grupo(campo, grupo)
+        if id_repre is None:
+            continue
+        est_label = id_repre + "\\n" + nombres_concat
+        for f_freq in suma_cult:
+            for sensor in campo.sensoresCultivo:
+                val = get_frecuencia_sensor(sensor, f_freq.idEstacion)
+                if val == f_freq.valor and val != 0:
+                    sensor_label = sensor.id + "\\n" + sensor.nombre
+                    f.write('  "{}" -> "{}" [label="{}"];\n'.format(est_label, sensor_label, val))
+                    break
+
+    f.write("}\n")
+    f.close()
